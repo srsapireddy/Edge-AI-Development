@@ -1786,11 +1786,71 @@ void loop() {}
 
 <img width="1917" height="941" alt="image" src="https://github.com/user-attachments/assets/d4ec1092-e668-4f6e-895d-f82146986ef4" />
 
+It’s a tiny self-contained example that shows how a Support Vector Machine (SVM) classifier makes predictions on microcontrollers with limited RAM/flash.
+Everything (weights, bias, test samples) is hard-coded so it can run standalone.
+
+---
+
+# Quantization Demystified - Fitting AI Models on Tiny Devices
+
+## Understanding ML Model Quantization Concepts
+
+Quantization reduces model precision from **32-bit floating point** to **lower bit representations**.
+
+### Key Benefits
+- Converts floating-point weights and activations to integer formats  
+- Reduces memory footprint and computational complexity significantly  
+- Maintains model accuracy while enabling efficient MCU deployment  
+
+### Quantization Approaches
+Multiple quantization approaches exist for different deployment scenarios and accuracy requirements:
+
+- **Post-training quantization** — for pre-trained model optimization  
+- **Quantization-aware training (QAT)** — for accuracy preservation during training  
+- **Dynamic quantization** — for runtime adaptive precision control  
+
+---
+
+# MCU Constraints
+
+## Resource Overview
+Microcontrollers present unique challenges with limited memory, processing power, and energy constraints requiring specialized optimization.
+
+### 01. Memory Limitations
+MCUs typically have 32KB–1MB RAM and limited flash storage, requiring aggressive model compression techniques.
+
+### 02. Processing Power
+Limited computational resources demand efficient algorithms and optimized operations.
+
+---
+
+# Quantization Techniques
+
+## 1. 8-bit Integer Quantization
+Standard approach converting 32-bit floats to 8-bit integers with significant memory reduction and computational speedup.
+
+## 2. Mixed-Precision Quantization
+Adaptive bit-width allocation using different precisions for layers to optimize accuracy-efficiency trade-offs effectively.
+
+## 3. Sub-byte Quantization
+Ultra-low precision using 2–4 bits per parameter for extreme compression enabling deployment on severely constrained devices.
 
 ---
 
 
+# Implementation Challenges
 
+## Key Obstacles
+
+### Accuracy Loss
+Quantization introduces numerical errors that can degrade model performance, requiring careful calibration and validation to maintain acceptable inference accuracy.
+
+### Hardware Limitations
+MCU instruction sets lack native support for mixed-precision operations, requiring specialized packing algorithms and optimization techniques.
+
+---
+
+# Post-Training Quantization - From 68KB Overflow to MCU-Ready AI
 
 
 
