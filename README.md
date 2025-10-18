@@ -1686,9 +1686,9 @@ Image 2: Predicted = 1, Actual = 1
 ---
 
 ### 📂 Directory Structure
-├── main.c
-├── svm_model1.h # Contains SVM weights & biases
-├── scaler1.h # Contains scaling parameters
+├── main.c <br>
+├── svm_model1.h # Contains SVM weights & biases <br>
+├── scaler1.h # Contains scaling parameters <br>
 ├── test_images.h # Contains test dataset samples
 
 
