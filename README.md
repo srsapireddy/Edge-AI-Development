@@ -1509,12 +1509,194 @@ const float scale[NUM_FEATURES] = {10.0f, 20000.0f};
 
 # Handwritten Digit Recognition with SVM - From MNIST to Embedded Boards
 
+This project demonstrates handwritten digit classification using the MNIST dataset with a Linear Support Vector Machine (SVM).  
+It includes complete preprocessing, training, evaluation, and visualization steps — including confusion matrix and misclassified image analysis.
+
+---
+
+## 📘 Overview
+
+- **Dataset:** MNIST (28×28 grayscale handwritten digits)
+- **Model Used:** Linear Support Vector Classifier (LinearSVC)
+- **Scaling Method:** StandardScaler (mean normalization and standard deviation scaling)
+- **Evaluation Metrics:** Accuracy, Classification Report, Confusion Matrix
+- **Visualization:** Matplotlib and Seaborn
+
+---
+
+## ⚙️ Workflow
+
+### 1️⃣ Import Required Libraries
+Uses TensorFlow (for MNIST dataset), scikit-learn (for model & metrics), NumPy, Pandas, Matplotlib, and Seaborn.
+
+---
+
+### 2️⃣ Load the MNIST Dataset
+The dataset is split into training and test sets:
+
+- **Training data:** 60,000 images  
+- **Test data:** 10,000 images
+
+---
+
+### 3️⃣ Reshape and Normalize Data
+Each image (28×28) is flattened into a 784-dimensional vector and converted to float32 for processing.
+
+---
+
+### 4️⃣ Feature Scaling
+Standardization ensures faster convergence and consistent margin calculations by centering data around mean = 0 and std = 1.
+
+---
+
+### 5️⃣ Model Training
+The LinearSVC model is trained with:
+
+- `dual = False` for efficiency  
+- `max_iter = 10000` to ensure convergence
+
+---
+
+### 6️⃣ Model Evaluation
+Accuracy and classification metrics are computed using:
+
+- `accuracy_score()`  
+- `classification_report()`
+
+---
+
+### 7️⃣ Visualization
+
+- Confusion matrix heatmap for class-wise performance  
+- Display of a few test images with their true and predicted labels  
+- Misclassified image visualization for error analysis
+
+---
+
+**End Result:**  
+A simple, interpretable, and efficient linear SVM model achieving ~93–97% accuracy on MNIST test data.
+
+---
+
+# Running MNIST Digit Recognition on the RISC-V Board
+
+## Bare Metal Code
+```
+#include <stdio.h>
+#include <math.h>
+#include "svm_model1.h"
+#include "scaler1.h"
+#include "test_images.h"
+
+// Scale input features using the mean and scale arrays
+void scale_input(float *x) {
+    for (int i = 0; i < NUM_FEATURES; i++) {
+        x[i] = (x[i] - mean[i]) / scale[i];
+    }
+}
+
+// SVM prediction for a single input vector
+int svm_predict(float *x) {
+    int best_class = 0;
+    float max_score = -INFINITY;
+
+    for (int c = 0; c < NUM_CLASSES; c++) {
+        float score = bias[c];
+        for (int i = 0; i < NUM_FEATURES; i++) {
+            score += weights[c][i] * x[i];
+        }
+        if (score > max_score) {
+            max_score = score;
+            best_class = c;
+        }
+    }
+    return best_class;
+}
+
+// Utility function to print float values
+void print_float(float val) {
+    int int_part = (int)val;
+    int frac_part = (int)((val - int_part) * 100);  // 2 decimal precision
+    if (frac_part < 0) frac_part *= -1;
+    printf("%d.%02d\n", int_part, frac_part);
+}
+
+// Main function to test multiple images
+int main() {
+    for (int i = 0; i < NUM_TEST_IMAGES; i++) {
+        float input[NUM_FEATURES];
+        for (int j = 0; j < NUM_FEATURES; j++) {
+            input[j] = test_images[i][j];
+        }
+
+        // Preprocess input
+        scale_input(input);
+
+        // Predict using SVM
+        int predicted = svm_predict(input);
+        int actual = test_labels[i];
+
+        // Display result
+        printf("Image %d: Predicted = %d, Actual = %d\n", i, predicted, actual);
+    }
+
+    return 0;
+}
+
+```
+
+## 🧩 Notes
+
+Make sure the following header files are in the same directory as your main C file:
+
+- `svm_model1.h` → contains trained **SVM weights and biases**
+- `scaler1.h` → contains **mean** and **scale** arrays for feature normalization
+- `test_images.h` → contains **sample test data and corresponding labels**
+
+---
+
+### ⚙️ How It Works
+
+This code performs inference using a pre-trained **Support Vector Machine (SVM)** model exported from Python to C.
+
+1. **Input Scaling:**  
+   Each test image vector is normalized using the mean and scale values stored in `scaler1.h`.
+
+2. **Prediction:**  
+   The scaled input is passed to the `svm_predict()` function, which computes:
+
+---
+
+score = bias[c] + Σ(weights[c][i] × x[i])
+
+The class with the highest score is chosen as the predicted output.
+
+3. **Testing:**  
+The program loops through all test samples defined in `test_images.h`, printing the predicted and actual labels for comparison.
+
+---
+
+### 🖥️ Example Output
+Image 0: Predicted = 2, Actual = 2
+Image 1: Predicted = 7, Actual = 7
+Image 2: Predicted = 1, Actual = 1
+...
 
 
+---
+
+### 📂 Directory Structure
+├── main.c
+├── svm_model1.h # Contains SVM weights & biases
+├── scaler1.h # Contains scaling parameters
+├── test_images.h # Contains test dataset samples
 
 
+---
 
+**This code will loop through all test images, scale them, predict using your trained SVM model, and print each prediction vs the ground truth.**
 
+---
 
 
 
