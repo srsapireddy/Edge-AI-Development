@@ -398,7 +398,7 @@ b = b - \alpha \frac{\partial J}{\partial b}
 $$
 
 Where:  
-- \( \alpha \) → Learning rate (controls the step size of updates)  
+- \alpha → Learning rate (controls the step size of updates)  
 - The process repeats for multiple iterations until the cost \( J(m,b) \) converges to a minimum value.  
 
 ---
