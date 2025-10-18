@@ -919,6 +919,67 @@ Rearranging for 𝑦 (Estimated Salary):
 
 # Implementing KNN Classifier in Python - Smarter Decision Boundaries
 
+## Mathematical Representation
+
+1. Distance Calculation
+
+For a given test point, the distance to each training point is calculated using Euclidean distance:
+
+d = √((x₁ - x₂)² + (y₁ - y₂)²)
+
+Here,
+x₁, y₁ → coordinates of the test point  
+x₂, y₂ → coordinates of a training point  
+
+---
+
+2. Finding Nearest Neighbors
+
+After calculating all distances, the K points with the smallest distances are selected.  
+In this project, K = 5.
+
+---
+
+3. Majority Voting
+
+The predicted class is determined by the majority vote among the K nearest neighbors:
+
+Predicted Class = Mode(y₁, y₂, …, yₖ)
+
+---
+
+4. Decision Boundary
+
+The decision boundary is the region where two classes have equal probability based on K nearest points.
+
+Σ(1/dᵢ) * I(yᵢ = 1) = Σ(1/dᵢ) * I(yᵢ = 0)
+
+Points on this boundary are shown by the color transition in the contour plot.
+
+---
+
+5. Complexity
+
+Each prediction requires computing distances to all training samples:
+
+Time Complexity: O(n × d)
+
+where  
+n = number of training samples  
+d = number of features  
+
+---
+
+6. In this code:
+
+K = 5  
+Distance metric = Euclidean distance  
+Output = Predicted label (0 or 1)  
+Visualization = Contour region with red and blue clusters
+
+---
+
+# From KNN to SVM - Smarter Models for Embedded Boards
 
 
 
