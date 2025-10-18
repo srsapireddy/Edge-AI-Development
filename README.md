@@ -1677,9 +1677,9 @@ The program loops through all test samples defined in `test_images.h`, printing 
 ---
 
 ### 🖥️ Example Output
-Image 0: Predicted = 2, Actual = 2
-Image 1: Predicted = 7, Actual = 7
-Image 2: Predicted = 1, Actual = 1
+Image 0: Predicted = 2, Actual = 2 <br>
+Image 1: Predicted = 7, Actual = 7 <br>
+Image 2: Predicted = 1, Actual = 1 <br>
 ...
 
 
@@ -1698,7 +1698,96 @@ Image 2: Predicted = 1, Actual = 1
 
 ---
 
+# STM32 Nucleo codes
 
+```
+#include <Arduino.h>
+#include <math.h>
+
+// ---------- MINI DEMO CONFIG (small to fit RAM/FLASH) ----------
+#define NUM_CLASSES     2
+#define NUM_FEATURES    16   // tiny feature count (e.g., downsampled or first 16 pixels)
+#define NUM_TEST_IMAGES 4    // just a few samples
+
+// Tiny example weights/bias (replace with small real values if you want)
+static const float weights[NUM_CLASSES][NUM_FEATURES] = {
+  // class 0
+  {  0.09f, -0.04f, 0.01f,  0.05f,  -0.02f, 0.03f,  0.01f, -0.01f,
+     0.02f,  0.04f, -0.03f, 0.00f,   0.01f, 0.02f, -0.02f,  0.01f },
+  // class 1
+  { -0.05f,  0.06f,-0.02f, -0.03f,   0.01f,-0.01f,  0.02f,  0.03f,
+    -0.02f, -0.04f, 0.04f,  0.01f,  -0.01f, 0.00f,  0.03f, -0.02f }
+};
+static const float bias[NUM_CLASSES] = { 0.01f, -0.02f };
+
+// Tiny scaler (mean/scale). Keep non-zero scale.
+static const float mean[NUM_FEATURES]  = {
+  0.50f, 0.50f, 0.50f, 0.50f, 0.50f, 0.50f, 0.50f, 0.50f,
+  0.50f, 0.50f, 0.50f, 0.50f, 0.50f, 0.50f, 0.50f, 0.50f
+};
+static const float scale[NUM_FEATURES] = {
+  0.25f, 0.25f, 0.25f, 0.25f, 0.25f, 0.25f, 0.25f, 0.25f,
+  0.25f, 0.25f, 0.25f, 0.25f, 0.25f, 0.25f, 0.25f, 0.25f
+};
+
+// Tiny test set (4 samples × 16 features)
+static const float test_images[NUM_TEST_IMAGES][NUM_FEATURES] = {
+  {0.60f,0.40f,0.55f,0.52f, 0.49f,0.51f,0.47f,0.58f, 0.62f,0.44f,0.48f,0.56f, 0.54f,0.50f,0.53f,0.45f},
+  {0.30f,0.52f,0.28f,0.33f, 0.55f,0.57f,0.51f,0.49f, 0.36f,0.40f,0.59f,0.61f, 0.50f,0.47f,0.39f,0.42f},
+  {0.72f,0.60f,0.70f,0.68f, 0.63f,0.65f,0.66f,0.71f, 0.69f,0.58f,0.64f,0.62f, 0.67f,0.73f,0.74f,0.61f},
+  {0.18f,0.22f,0.25f,0.29f, 0.31f,0.27f,0.24f,0.21f, 0.19f,0.23f,0.33f,0.35f, 0.28f,0.26f,0.20f,0.30f}
+};
+static const int test_labels[NUM_TEST_IMAGES] = {0, 1, 0, 1};
+
+// ---------- Inference (no extra buffers) ----------
+static int svm_predict_scaled(const float *x_raw) {
+  int best_class = 0;
+  float max_score = -INFINITY;
+
+  for (int c = 0; c < NUM_CLASSES; c++) {
+    float score = bias[c];
+    for (int i = 0; i < NUM_FEATURES; i++) {
+      float xi = (x_raw[i] - mean[i]) / scale[i];
+      score += weights[c][i] * xi;
+    }
+    if (score > max_score) {
+      max_score = score;
+      best_class = c;
+    }
+  }
+  return best_class;
+}
+
+void setup() {
+  Serial.begin(115200);
+  delay(100);
+
+  int correct = 0;
+  for (int n = 0; n < NUM_TEST_IMAGES; n++) {
+    const float *x = &test_images[n][0];
+    const int y = test_labels[n];
+    int pred = svm_predict_scaled(x);
+    if (pred == y) correct++;
+
+    Serial.print("Image "); Serial.print(n);
+    Serial.print(": Predicted="); Serial.print(pred);
+    Serial.print("  Actual="); Serial.println(y);
+  }
+
+  float acc = (NUM_TEST_IMAGES > 0) ? (100.0f * correct / NUM_TEST_IMAGES) : 0.0f;
+  Serial.print("Accuracy: "); Serial.print(acc, 2); Serial.println("%");
+}
+
+void loop() {}
+
+```
+
+## Expected Output:
+
+<img width="1917" height="941" alt="image" src="https://github.com/user-attachments/assets/d4ec1092-e668-4f6e-895d-f82146986ef4" />
+
+
+---
 
 
 
