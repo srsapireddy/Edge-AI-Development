@@ -682,24 +682,25 @@ plt.show()
 
 ## 🧮 Mathematical Explanation
 
-### 1. Hypothesis Function
+## 1. Hypothesis Function
 
 Polynomial Regression models the target variable as:
 
 \[
-\hat{Y} = \beta_0 + \beta_1 X + \beta_2 X^2 + \beta_3 X^3 + \ldots + \beta_n X^n
+\hat{Y} = \beta_0 + \beta_1 X + \beta_2 X^2 + \beta_3 X^3 + \dots + \beta_n X^n
 \]
 
 For multiple input variables:
 
 \[
-\hat{Y} = \beta_0 + \beta_1x_1 + \beta_2x_2 + \beta_3x_3 + \beta_4x_1^2 + \beta_5x_1x_2 + \beta_6x_3^2 + \ldots
+\hat{Y} = \beta_0 + \beta_1x_1 + \beta_2x_2 + \beta_3x_3 + \beta_4x_1^2 + \beta_5x_1x_2 + \beta_6x_3^2 + \dots
 \]
 
 Here,  
 - \( \hat{Y} \) → Predicted output  
-- \( x_1, x_2, x_3 \) → Independent variables  
-- \( \beta_i \) → Model coefficients (weights)  
+- \( (x_1, x_2, x_3) \) → Independent variables  
+- \( \beta_i \) → Model coefficients (weights)
+
 
 ---
 
