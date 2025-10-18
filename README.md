@@ -1852,7 +1852,76 @@ MCU instruction sets lack native support for mixed-precision operations, requiri
 
 # Post-Training Quantization - From 68KB Overflow to MCU-Ready AI
 
+## Quantized SVM Inference on MCU
 
+This program performs **Support Vector Machine (SVM)** inference using quantized model parameters and scaler values stored in C header files. It demonstrates how machine learning inference can be executed efficiently on low-memory embedded systems such as microcontrollers.
+
+### Overview
+
+The model parameters (weights, bias, mean, and scale) are pre-quantized into **8-bit integers (int8_t)** for memory and computation efficiency. The code performs scaling, prediction, and evaluation on test samples directly on the MCU.
+
+### Files Included
+
+- **svm_model_q.h** – Contains quantized SVM weights, biases, and the scaling factor (`weight_scale`, `bias_scale`).
+- **scaler_q.h** – Holds quantized feature scaling parameters (`mean`, `scale`) and their corresponding scale constants (`mean_scale`, `scale_scale`).
+- **test_images_q.h** – Stores test feature vectors and their labels.
+
+### Functions
+
+#### `void scale_input(int8_t *x)`
+Normalizes each feature using quantized mean and scale values:
+```c
+x[i] = (x[i] - (mean[i] * mean_scale)) / (scale[i] * scale_scale);
+
+
+```
+#include <stdio.h>
+#include <stdint.h>
+#include <math.h>
+#include "svm_model_q.h"
+#include "scaler_q.h"
+#include "test_images_q.h"
+
+void scale_input(int8_t *x) {
+    for (int i = 0; i < NUM_FEATURES; i++) {
+        x[i] = (x[i] - (mean[i] * mean_scale)) / (scale[i] * scale_scale);
+    }
+}
+
+int predict(int8_t *x) {
+    int best_class = 0;
+    float max_score = -INFINITY;
+    for (int c = 0; c < NUM_CLASSES; ++c) {
+        float score = bias[0] * bias_scale;
+        for (int i = 0; i < NUM_FEATURES; i++) {
+            score += weights[0][i] * x[i] * weight_scale;
+        }
+        if (score > max_score) {
+            max_score = score;
+            best_class = c;
+        }
+    }
+    return best_class;
+}
+
+void print_float(float val) {
+    int int_part = (int)val;
+    int frac_part = (int)((val - int_part) * 100);  // 2 decimal places
+    if (frac_part < 0) frac_part *= -1;
+    printf("%d.%02d\n", int_part, frac_part);
+}
+
+int main() {
+    for (int i = 0; i < NUM_TEST_IMAGES; i++) {
+        scale_input(test_images[i]);
+        int predicted = predict(test_images[i]);
+        int actual = test_labels[i];
+        printf("Image %d: Predicted = %d, Actual = %d\n", i, predicted, actual);
+    }
+    return 0;
+}
+
+```
 
 
 
