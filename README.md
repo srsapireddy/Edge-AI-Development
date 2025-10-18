@@ -981,7 +981,100 @@ Visualization = Contour region with red and blue clusters
 
 # From KNN to SVM - Smarter Models for Embedded Boards
 
+## Mathematical Representation
 
+1. Decision Function
+
+The Support Vector Machine (SVM) tries to find the best separating boundary between two classes by maximizing the margin.  
+The decision function is given by:
+
+f(x) = w₀ + w₁x₁ + w₂x₂
+
+where  
+w₀ → bias term  
+w₁, w₂ → model weights  
+x₁, x₂ → input features (Age and Salary)
+
+---
+
+2. Classification Rule
+
+The SVM predicts the class of a point based on the sign of the decision function:
+
+If f(x) ≥ 0 → Class 1  
+If f(x) < 0 → Class 0
+
+Thus, the decision boundary is defined where f(x) = 0.
+
+---
+
+3. Margin and Support Vectors
+
+The margin is the distance between the decision boundary and the closest data points from each class.  
+These closest points are called **Support Vectors**.
+
+The margin distance is given by:
+
+Margin = 2 / ||w||
+
+where ||w|| is the magnitude of the weight vector.
+
+---
+
+4. Optimization Objective
+
+The goal of SVM is to maximize the margin (minimize ||w||) while correctly classifying the samples.  
+This is done by solving the following optimization problem:
+
+Minimize: (1/2) ||w||²  
+Subject to: yᵢ (w·xᵢ + b) ≥ 1,  for all i
+
+where  
+yᵢ → true label of sample i (+1 or -1)  
+xᵢ → input feature vector  
+b → bias term
+
+---
+
+5. RBF (Radial Basis Function) Kernel
+
+In this code, the kernel used is RBF (non-linear).  
+The RBF kernel transforms data into a higher-dimensional space to make it linearly separable.
+
+The kernel function is defined as:
+
+K(xᵢ, xⱼ) = exp(−γ ||xᵢ − xⱼ||²)
+
+where  
+γ (gamma) controls how much influence a single training example has.  
+Higher γ → smaller decision regions, can lead to overfitting.  
+Lower γ → smoother boundary, can underfit.
+
+---
+
+6. Final Decision Function
+
+For non-linear SVM with RBF kernel:
+
+f(x) = Σ αᵢ yᵢ K(xᵢ, x) + b
+
+where  
+αᵢ → Lagrange multipliers  
+K(xᵢ, x) → kernel function between support vector xᵢ and input x  
+b → bias term  
+
+The predicted class is determined by the sign of f(x).
+
+---
+
+7. Visualization
+
+The colored contour region represents the decision boundary created by the SVM.  
+The red and green regions show how the classifier separates the two classes (Purchased and Not Purchased) based on Age and Estimated Salary.
+
+---
+
+# Deploying SVM Models on RISC-V Boards - From Python to C (Need Board)
 
 
 
