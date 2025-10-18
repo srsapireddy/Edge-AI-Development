@@ -1076,6 +1076,446 @@ The red and green regions show how the classifier separates the two classes (Pur
 
 # Deploying SVM Models on RISC-V Boards - From Python to C (Need Board)
 
+## Exporting Scaler Parameters to C Header File
+
+1. Extract Mean and Scale
+
+The `StandardScaler` in Scikit-learn computes two main parameters for each feature:
+
+mean = sc.mean_  
+scale = sc.scale_
+
+Here,
+- mean → average value of each feature  
+- scale → standard deviation of each feature (used for normalization)
+
+---
+
+2. File Creation
+
+We open a new header file named `scaler.h` to store these parameters:
+
+with open("scaler.h", "w") as f:
+
+---
+
+3. Writing Parameters
+
+We define the number of features and write both the mean and scale values into C-style arrays.
+
+#define NUM_FEATURES len(mean)
+
+double mean[NUM_FEATURES] = { m₁, m₂, m₃, … };  
+double scale[NUM_FEATURES] = { s₁, s₂, s₃, … };
+
+---
+
+4. Purpose
+
+These parameters allow the same normalization process to be replicated on hardware or embedded systems, ensuring that the input data is scaled in the same way as during model training.
+
+---
+
+5. Example Output (scaler.h)
+
+#define NUM_FEATURES 2
+
+double mean[NUM_FEATURES] = { 35.1234567890, 75000.9876543210 };
+double scale[NUM_FEATURES] = { 10.4567891234, 20000.6543219876 };
+
+---
+
+Exported scaler parameters to `scaler.h`
+---
+
+## Bare Metal Code
+
+```
+#include <stdio.h>
+#include "svm_model.h"
+#include "scaler.h"
+
+void scale_input(float *x) {
+    for (int i = 0; i < NUM_FEATURES; ++i) {
+        x[i] = (x[i] - mean[i]) / scale[i];
+    }
+}
+
+int predict(float *x) {
+    float max_score = -1e9;
+    int best_class = -1;
+
+    for (int c = 0; c < NUM_CLASSES; ++c) {
+        float score = bias[c];
+        for (int i = 0; i < NUM_FEATURES; ++i) {
+            score += weights[c][i] * x[i];
+        }
+
+        if (score > max_score) {
+            max_score = score;
+            best_class = c;
+        }
+    }
+
+    return best_class;
+}
+
+int main() {
+    float input[2] = {19, 90000}; // Example input features
+
+    // Preprocess (feature scaling)
+    scale_input(input);
+
+    // Predict class
+    int prediction = predict(input);
+
+    // Output result (UART or onboard console)
+    printf("Predicted class: %d\n", prediction);
+
+    return 0;
+}
+
+
+```
+
+## Embedded SVM Classification (C Implementation)
+
+1. **Header Imports**
+
+The program uses:
+- `svm_model.h` → contains trained model weights and biases
+- `scaler.h` → contains mean and scale values from the StandardScaler
+- `<stdio.h>` → standard C I/O library for printing results
+
+---
+
+2. **Feature Scaling Function**
+
+Before prediction, features are normalized to match training distribution:
+
+x[i] = (x[i] - mean[i]) / scale[i]
+
+This ensures consistency with Python preprocessing.
+
+---
+
+3. **Prediction Function**
+
+For each class, a decision score is computed as:
+
+score = bias[c] + Σ(weights[c][i] × x[i])
+
+The class with the maximum score is chosen as the prediction.
+
+best_class = argmax(score)
+
+---
+
+4. **Main Execution**
+
+Steps:
+- Load input feature vector (e.g., [Age, Salary])
+- Scale inputs with `scale_input()`
+- Run `predict()` to compute decision scores
+- Print predicted class index
+
+---
+
+5. **Example Output**
+
+Input:
+Age = 19  
+Estimated Salary = 90000  
+
+Output:
+Predicted class: 1
+
+---
+
+This code runs efficiently on embedded systems and microcontrollers such as SiFive RISC-V or ARM-based SoCs.
+
+# Embedded SVM Inference on Arduino (Wokwi Simulation)
+
+This project demonstrates how to deploy a trained **Support Vector Machine (SVM)** model on an embedded device using **Arduino** and the **Wokwi Simulator**.  
+The trained SVM model parameters (weights, biases, and scaling) are exported from Python and used for real-time inference on a microcontroller.
+
+---
+
+## Overview
+
+This project shows how to:
+- Train an SVM in Python (using scikit-learn)
+- Export model weights, biases, and scaler parameters
+- Deploy the model as a C program running on Arduino hardware (or simulated in Wokwi)
+
+It enables **lightweight edge AI inference** without any external libraries or frameworks.
+
+---
+
+## 📁 Project Structure
+
+├── sketch.ino → Main program (C inference logic)
+├── svm_model.h → Model weights and biases
+├── scaler.h → Mean and scale values for input normalization
+
+
+---
+
+## ⚙️ Step 1: Create `svm_model.h`
+
+This header defines the trained SVM model coefficients and bias terms.
+
+```c
+#ifndef SVM_MODEL_H
+#define SVM_MODEL_H
+
+#define NUM_CLASSES 2
+#define NUM_FEATURES 2
+
+// Example model coefficients (replace with your trained values)
+const float weights[NUM_CLASSES][NUM_FEATURES] = {
+    { 0.45f, 1.23f },
+    { -0.65f, 0.98f }
+};
+
+// Bias for each class
+const float bias[NUM_CLASSES] = { 0.10f, -0.20f };
+
+#endif
+```
+
+## Step 2: Create scaler.h
+
+This file contains the mean and scale parameters used to normalize input features during preprocessing.
+
+```
+#ifndef SCALER_H
+#define SCALER_H
+
+#define NUM_FEATURES 2
+
+// Replace these values with those from your StandardScaler in Python
+const float mean[NUM_FEATURES]  = { 35.0f, 75000.0f };
+const float scale[NUM_FEATURES] = { 10.0f, 20000.0f };
+
+#endif
+
+```
+
+## Step 3: Create sketch.ino
+
+This Arduino program performs feature scaling, runs SVM inference, and prints the result to the serial monitor.
+
+```
+#include <Arduino.h>
+#include "svm_model.h"
+#include "scaler.h"
+
+// Scale inputs using mean and scale values
+void scale_input(float *x) {
+  for (int i = 0; i < NUM_FEATURES; ++i) {
+    x[i] = (x[i] - mean[i]) / scale[i];
+  }
+}
+
+// Predict class based on linear SVM decision function
+int predict(const float *x) {
+  float max_score = -1e9f;
+  int best_class = -1;
+
+  for (int c = 0; c < NUM_CLASSES; ++c) {
+    float score = bias[c];
+    for (int i = 0; i < NUM_FEATURES; ++i) {
+      score += weights[c][i] * x[i];
+    }
+    if (score > max_score) {
+      max_score = score;
+      best_class = c;
+    }
+  }
+  return best_class;
+}
+
+void setup() {
+  Serial.begin(115200);
+
+  // Example input features (Age, Salary)
+  float input[NUM_FEATURES] = { 19.0f, 90000.0f };
+
+  // Step 1: Scale input
+  scale_input(input);
+
+  // Step 2: Predict class
+  int cls = predict(input);
+
+  // Step 3: Display result
+  Serial.print("Predicted class: ");
+  Serial.println(cls);
+}
+
+void loop() {
+  // Nothing here
+}
+
+```
+
+## Example Output
+
+<img width="1912" height="982" alt="image" src="https://github.com/user-attachments/assets/fb7783d0-e961-49f2-8262-1e8876318222" />
+
+---
+
+## Rather than importing one variable at a time we can improt all the variables at one go
+
+## RISC-V Code
+```
+#include <stdio.h>
+#include <math.h>
+#include "svm_model.h"
+#include "scaler.h"
+
+// Function to scale input data using mean and scale arrays
+void scale_input(float *x) {
+    for (int i = 0; i < NUM_FEATURES; i++) {
+        x[i] = (x[i] - mean[i]) / scale[i];
+    }
+}
+
+// SVM prediction function
+int predict(float *x) {
+    float score = bias[0];
+    for (int i = 0; i < NUM_FEATURES; i++) {
+        score += weights[0][i] * x[i];
+    }
+    if (score <= 0)
+        return 0;
+    return 1;
+}
+
+// Function to print a floating-point value with 2 decimal places
+void print_float(float val) {
+    int int_part = (int)val;
+    int frac_part = (int)((val - int_part) * 100);  // 2 decimal precision
+    if (frac_part < 0) frac_part *= -1;
+    printf("%d.%02d\n", int_part, frac_part);
+}
+
+int main() {
+    float input[2] = {20, 19000}; // Example input values (feature 1 and feature 2)
+    
+    // Preprocessing step: scale input
+    scale_input(input);
+    
+    // Predict using SVM
+    int label = predict(input);
+
+    // Print result
+    printf("Predicted output: %d\n", label);
+
+    return 0;
+}
+
+
+```
+
+## Microcontroller code
+
+## SVM Inference (Embedded AI in C)
+
+## Project Structure
+📁 SVM_Inference_Arduino
+│
+├── sketch.ino          # Main Arduino program
+├── svm_model.h         # Model weights and bias
+└── scaler.h            # Mean and scale parameters
+
+## Example Code (sketch.ino)
+```
+#include <Arduino.h>
+#include "svm_model.h"
+#include "scaler.h"
+
+void scale_input(float *x) {
+  for (int i = 0; i < NUM_FEATURES; i++) {
+    x[i] = (x[i] - mean[i]) / scale[i];
+  }
+}
+
+int predict(float *x) {
+  float score = bias[0];
+  for (int i = 0; i < NUM_FEATURES; i++) {
+    score += weights[0][i] * x[i];
+  }
+  if (score <= 0)
+    return 0;
+  return 1;
+}
+
+void setup() {
+  Serial.begin(115200);
+
+  float input[2] = {20, 19000};
+  scale_input(input);
+  int label = predict(input);
+
+  Serial.print("Predicted output: ");
+  Serial.println(label);
+}
+
+void loop() {}
+
+```
+
+## Example Model Files
+svm_model.h
+```
+#ifndef SVM_MODEL_H
+#define SVM_MODEL_H
+
+#define NUM_FEATURES 2
+const float weights[1][NUM_FEATURES] = { {0.001f, 0.0002f} };
+const float bias[1] = {-0.85f};
+
+#endif
+
+```
+
+scaler.h
+
+```
+#ifndef SCALER_H
+#define SCALER_H
+
+#define NUM_FEATURES 2
+const float mean[NUM_FEATURES]  = {35.0f, 75000.0f};
+const float scale[NUM_FEATURES] = {10.0f, 20000.0f};
+
+#endif
+
+```
+
+## Highlights
+
+* Runs trained ML models without Python or TensorFlow
+*  Suitable for SiFive RISC-V, ARM Cortex-M, and Arduino-class boards
+* Demonstrates hardware-aware AI deployment
+* Works fully inside the Wokwi simulator
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
