@@ -823,7 +823,101 @@ int main (void)
 ## Example Simulation: STM 32 Microcontroller
 <img width="1918" height="988" alt="image" src="https://github.com/user-attachments/assets/31ec5539-b985-451d-9669-07497900677a" />
 
+---
 
+# From Regression to Classification
+
+This project demonstrates **Logistic Regression** — a supervised machine learning algorithm used for **binary classification** problems.  
+We use the dataset **`Social_Network_Ads.csv`**, which predicts whether a user purchases a product based on their **Age** and **Estimated Salary**.
+
+## Code
+
+```
+# Step 1: Importing Libraries
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sns
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import confusion_matrix, accuracy_score, classification_report
+
+# Step 2: Importing Dataset
+dataset = pd.read_csv('Social_Network_Ads.csv')
+X = dataset.iloc[:, [1, 2]].values
+y = dataset.iloc[:, 3].values
+
+print(X)
+print(y)
+
+# Step 3: Splitting Dataset into Training and Test Sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.25, random_state = 0)
+
+# Step 4: Feature Scaling
+sc = StandardScaler()
+X_train = sc.fit_transform(X_train)
+X_test = sc.transform(X_test)
+
+# Step 5: Training Logistic Regression Model
+classifier = LogisticRegression()
+classifier.fit(X_train, y_train)
+
+# Step 6: Making Predictions
+y_pred = classifier.predict(X_test)
+
+# Step 7: Evaluating the Model
+accuracy = accuracy_score(y_test, y_pred)
+print("Accuracy: {:.2f}%".format(accuracy * 100))
+
+print("Coefficients:", classifier.coef_)
+print("Intercept:", classifier.intercept_)
+
+# Step 8: Visualization of Training Results
+plt.figure(figsize=(8, 6))
+sns.scatterplot(x=X_train[:, 0], y=X_train[:, 1], hue=y_train, palette={0: 'blue', 1: 'red'}, marker='o')
+
+plt.xlabel("Age")
+plt.ylabel("Estimated Salary")
+plt.title("Logistic Regression (Training set)")
+plt.show()
+
+```
+---
+
+## Mathematical Representation
+
+1. Hypothesis Function
+
+ℎ𝜃(𝑥) = 1 / (1 + 𝑒^(−(𝜃₀ + 𝜃₁𝑥₁ + 𝜃₂𝑥₂)))
+
+where:
+
+ℎ𝜃(𝑥) → predicted probability of belonging to class 1  
+𝑥₁, 𝑥₂ → input features (Age and Salary)  
+𝜃₀, 𝜃₁, 𝜃₂ → model coefficients  
+
+---
+
+2. Decision Boundary Equation
+
+The logistic regression decision boundary is given by:
+
+𝑝 = 𝜃₀ + 𝜃₁𝑥₁ + 𝜃₂𝑥₂ = 0
+
+For your trained model, the coefficients are:
+
+𝑝 = 2.07665837𝑥₁ + 1.11088221𝑥₂ − 0.95217247 = 0
+
+Rearranging for 𝑦 (Estimated Salary):
+
+1.11088221𝑦 = −2.07665837𝑥 + 0.95217247  
+𝑦 = (−2.07665837𝑥 + 0.95217247) / 1.11088221
+
+
+---
+
+# Implementing KNN Classifier in Python - Smarter Decision Boundaries
 
 
 
