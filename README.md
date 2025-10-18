@@ -598,6 +598,247 @@ Where:
 
 ---
 
+# Degree Up - Fitting Complex Patterns for Edge AI - Polynomial Regression
+
+This project shows how to fit a **polynomial regression** model using scikit-learn by expanding inputs with `PolynomialFeatures` and then training a standard `LinearRegression`.  
+We’ll use the classic `50_Startups.csv` dataset, drop the non-numeric `State` column, generate **degree=3** polynomial features, train, and visualize predictions.
+
+---
+
+## 📦 Requirements
+
+- Python 3.8+
+- pandas
+- numpy
+- matplotlib
+- scikit-learn
+
+Install:
+```bash
+pip install pandas numpy matplotlib scikit-learn
+```
+
+---
+
+## Full Code
+```
+# Polynomial Regression Example (degree=3) on 50_Startups.csv
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+from sklearn.preprocessing import PolynomialFeatures
+
+# 1) Load the dataset
+dataset = pd.read_csv('50_Startups.csv')
+
+# 2) Remove the non-numeric 'State' column
+dataset = dataset.drop('State', axis=1)
+
+# 3) Separate features (X) and target (Y)
+#    X: [R&D Spend, Administration, Marketing Spend]
+#    Y: Profit
+X = dataset.iloc[:, :-1].values
+Y = dataset.iloc[:, -1].values
+
+# 4) Create polynomial features (degree = 3)
+poly = PolynomialFeatures(degree=3)
+X_poly = poly.fit_transform(X)
+print("Transformed feature shape:", X_poly.shape)   # (n_samples, n_poly_terms)
+
+# 5) Fit a linear model on polynomial features
+model = LinearRegression()
+model.fit(X_poly, Y)
+
+# 6) Inspect learned parameters
+print("Coefficients:", model.coef_)
+print("Intercept:", model.intercept_)
+
+# 7) Predict on the same X (for demo/visualization)
+y_pred = model.predict(X_poly)
+print("Predictions (first 10):", y_pred[:10])
+
+# 8) Simple visualization
+# NOTE: X has 3 columns. For a quick 2D scatter, we plot against the first feature (R&D Spend).
+x_plot = X[:, 0] if X.ndim > 1 else X
+order = np.argsort(x_plot)           # sort for a cleaner curve
+x_plot_sorted = x_plot[order]
+y_pred_sorted = y_pred[order]
+y_true_sorted = Y[order]
+
+plt.scatter(x_plot_sorted, y_true_sorted, color='blue', label='Actual')
+plt.plot(x_plot_sorted, y_pred_sorted, color='red', label='Predicted (poly deg=3)')
+plt.title('Polynomial Regression (Profit vs R&D Spend)')
+plt.xlabel('R&D Spend')
+plt.ylabel('Profit')
+plt.legend()
+plt.tight_layout()
+plt.show()
+
+```
+
+---
+
+## 🧮 Mathematical Explanation
+
+### 1. Hypothesis Function
+
+Polynomial Regression models the target variable as:
+
+\[
+\hat{Y} = \beta_0 + \beta_1 X + \beta_2 X^2 + \beta_3 X^3 + \ldots + \beta_n X^n
+\]
+
+For multiple input variables:
+
+\[
+\hat{Y} = \beta_0 + \beta_1x_1 + \beta_2x_2 + \beta_3x_3 + \beta_4x_1^2 + \beta_5x_1x_2 + \beta_6x_3^2 + \ldots
+\]
+
+Here,  
+- \( \hat{Y} \) → Predicted output  
+- \( x_1, x_2, x_3 \) → Independent variables  
+- \( \beta_i \) → Model coefficients (weights)  
+
+---
+
+### 2. Cost Function
+
+The objective of the model is to minimize the **Mean Squared Error (MSE):**
+
+\[
+J(\beta) = \frac{1}{N} \sum_{i=1}^{N} (Y_i - \hat{Y_i})^2
+\]
+
+Where:  
+- \( Y_i \): Actual (true) value  
+- \( \hat{Y_i} \): Predicted value  
+- \( N \): Number of samples  
+
+This measures the average squared difference between predicted and actual outputs.
+
+---
+
+### 3. Parameter Optimization (Normal Equation)
+
+The best-fit coefficients are found analytically using the **Normal Equation**:
+
+\[
+\beta = (X^T X)^{-1} X^T Y
+\]
+
+This approach computes optimal weights by minimizing the cost function directly.  
+In Scikit-Learn, this step is handled automatically by the `LinearRegression()` model.
+
+---
+
+### 4. Polynomial Transformation
+
+Given original features:
+
+\[
+X = [x_1, x_2, x_3]
+\]
+
+For a **polynomial degree of 3**, the transformed feature vector is:
+
+\[
+\Phi(X) = [1, x_1, x_2, x_3, x_1^2, x_2^2, x_3^2, x_1x_2, x_1x_3, x_2x_3, x_1^3, x_2^3, x_3^3, \ldots]
+\]
+
+Then, the new hypothesis function becomes:
+
+\[
+\hat{Y} = \theta_0 + \theta_1\Phi_1(X) + \theta_2\Phi_2(X) + \ldots + \theta_k\Phi_k(X)
+\]
+
+This allows the linear regression model to learn **nonlinear relationships** by operating on polynomially expanded features.
+
+---
+
+### 5. Example Model Equation
+
+After training, a possible output model could look like:
+
+\[
+Y = 0.7788x_1 + 0.0294x_2 + 0.0347x_3 + 42989.0082
+\]
+
+Where:  
+- \( x_1 \): R&D Spend  
+- \( x_2 \): Administration  
+- \( x_3 \): Marketing Spend  
+
+This means:
+- For every increase in R&D spend (\( x_1 \)), profit increases by approximately **0.7788 units**,  
+- For every increase in Administration spending (\( x_2 \)), profit increases by **0.0294 units**,  
+- For every increase in Marketing Spend (\( x_3 \)), profit increases by **0.0347 units**,  
+- \( 42989.0082 \) represents the **intercept (base profit)** when all inputs are zero.
+
+---
+
+### Summary
+
+- Polynomial Regression generalizes Linear Regression by adding polynomial terms of input features.  
+- It fits a **curved surface** to the data, making it useful for datasets where the relationship between inputs and outputs is nonlinear.  
+- Scikit-Learn’s `PolynomialFeatures` automates the creation of these polynomial terms.  
+
+\[
+\text{Final Model: } \hat{Y} = \beta_0 + \beta_1x_1 + \beta_2x_2 + \beta_3x_3 + \ldots + \beta_nx_n
+\]
+
+<img width="1342" height="750" alt="image" src="https://github.com/user-attachments/assets/f5e766ef-5691-4d3f-b295-0eac462fe565" />
+
+
+---
+
+# From Python to Silicon - Model on RISC-V
+
+```
+/* Copyright 2019 SiFive, Inc */
+/* SPDX-License-Identifier: Apache-2.0 */
+
+#include <stdio.h>
+#include <metal/cpu.h>
+#include <metal/led.h>
+#include <metal/button.h>
+#include <metal/switch.h>
+
+#define RTC_FREQ        32768
+
+#define x1 0.77884104f
+#define x2 0.0293919f
+#define x3 0.03471025f
+#define b 42989.00816508669f
+
+float predict(float inp1, float inp2, float inp3){
+    return x1*inp1 + x2*inp2 + x3*inp3 + b;
+}
+
+void print_float(float val){
+    int int_part = (int)val;
+    int frac_part = (int)((val - int_part) * 100);  // 2 decimal places
+    if (frac_part < 0) frac_part *= -1;
+    printf("%d.%02d", int_part, frac_part);
+}
+
+int main (void)
+{
+    float RDSpend=165349.2f;
+    float ADSpend=136897.9f;
+    float MKSpend=471784.1f;
+    float profit;
+    profit=predict(RDSpend,ADSpend,MKSpend);
+    printf("profit is : %f", profit );
+    print_float(profit);
+    // return
+    return 0;
+}
+
+```
+
+
 
 
 
