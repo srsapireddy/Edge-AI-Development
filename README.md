@@ -682,25 +682,20 @@ plt.show()
 
 ## 🧮 Mathematical Explanation
 
-## 1. Hypothesis Function
+### 1. Hypothesis Function
 
 Polynomial Regression models the target variable as:
 
-\[
-\hat{Y} = \beta_0 + \beta_1 X + \beta_2 X^2 + \beta_3 X^3 + \dots + \beta_n X^n
-\]
+**Ŷ = β₀ + β₁X + β₂X² + β₃X³ + ... + βₙXⁿ**
 
 For multiple input variables:
 
-\[
-\hat{Y} = \beta_0 + \beta_1x_1 + \beta_2x_2 + \beta_3x_3 + \beta_4x_1^2 + \beta_5x_1x_2 + \beta_6x_3^2 + \dots
-\]
+**Ŷ = β₀ + β₁x₁ + β₂x₂ + β₃x₃ + β₄x₁² + β₅x₁x₂ + β₆x₃² + ...**
 
-Here,  
-- \( \hat{Y} \) → Predicted output  
-- \( (x_1, x_2, x_3) \) → Independent variables  
-- \( \beta_i \) → Model coefficients (weights)
-
+**Where:**
+- **Ŷ** → Predicted output  
+- **(x₁, x₂, x₃)** → Independent variables  
+- **βᵢ** → Model coefficients (weights)
 
 ---
 
@@ -708,14 +703,12 @@ Here,
 
 The objective of the model is to minimize the **Mean Squared Error (MSE):**
 
-\[
-J(\beta) = \frac{1}{N} \sum_{i=1}^{N} (Y_i - \hat{Y_i})^2
-\]
+**J(β) = (1/N) × Σ(Yᵢ − Ŷᵢ)²**
 
-Where:  
-- \( Y_i \): Actual (true) value  
-- \( \hat{Y_i} \): Predicted value  
-- \( N \): Number of samples  
+**Where:**
+- **Yᵢ** → Actual (true) value  
+- **Ŷᵢ** → Predicted value  
+- **N** → Number of samples  
 
 This measures the average squared difference between predicted and actual outputs.
 
@@ -723,71 +716,60 @@ This measures the average squared difference between predicted and actual output
 
 ### 3. Parameter Optimization (Normal Equation)
 
-The best-fit coefficients are found analytically using the **Normal Equation**:
+The best-fit coefficients are found analytically using the **Normal Equation:**
 
-\[
-\beta = (X^T X)^{-1} X^T Y
-\]
+**β = (XᵀX)⁻¹XᵀY**
 
-This approach computes optimal weights by minimizing the cost function directly.  
-In Scikit-Learn, this step is handled automatically by the `LinearRegression()` model.
+This computes optimal weights by minimizing the cost function directly.  
+In Scikit-Learn, this step is automatically handled by the `LinearRegression()` model.
 
 ---
 
 ### 4. Polynomial Transformation
 
-Given original features:
+Given the original features:
 
-\[
-X = [x_1, x_2, x_3]
-\]
+**X = [x₁, x₂, x₃]**
 
 For a **polynomial degree of 3**, the transformed feature vector is:
 
-\[
-\Phi(X) = [1, x_1, x_2, x_3, x_1^2, x_2^2, x_3^2, x_1x_2, x_1x_3, x_2x_3, x_1^3, x_2^3, x_3^3, \ldots]
-\]
+**Φ(X) = [1, x₁, x₂, x₃, x₁², x₂², x₃², x₁x₂, x₁x₃, x₂x₃, x₁³, x₂³, x₃³, ...]**
 
 Then, the new hypothesis function becomes:
 
-\[
-\hat{Y} = \theta_0 + \theta_1\Phi_1(X) + \theta_2\Phi_2(X) + \ldots + \theta_k\Phi_k(X)
-\]
+**Ŷ = θ₀ + θ₁Φ₁(X) + θ₂Φ₂(X) + ... + θₖΦₖ(X)**
 
-This allows the linear regression model to learn **nonlinear relationships** by operating on polynomially expanded features.
+This allows the linear regression model to learn **nonlinear relationships** using polynomially expanded features.
 
 ---
 
 ### 5. Example Model Equation
 
-After training, a possible output model could look like:
+After training, a possible model could look like:
 
-\[
-Y = 0.7788x_1 + 0.0294x_2 + 0.0347x_3 + 42989.0082
-\]
+**Y = 0.7788x₁ + 0.0294x₂ + 0.0347x₃ + 42989.0082**
 
-Where:  
-- \( x_1 \): R&D Spend  
-- \( x_2 \): Administration  
-- \( x_3 \): Marketing Spend  
+**Where:**
+- **x₁** → R&D Spend  
+- **x₂** → Administration  
+- **x₃** → Marketing Spend  
 
-This means:
-- For every increase in R&D spend (\( x_1 \)), profit increases by approximately **0.7788 units**,  
-- For every increase in Administration spending (\( x_2 \)), profit increases by **0.0294 units**,  
-- For every increase in Marketing Spend (\( x_3 \)), profit increases by **0.0347 units**,  
-- \( 42989.0082 \) represents the **intercept (base profit)** when all inputs are zero.
+**Interpretation:**
+- For every increase in R&D spend (**x₁**), profit increases by ~0.7788 units.  
+- For every increase in Administration spending (**x₂**), profit increases by ~0.0294 units.  
+- For every increase in Marketing Spend (**x₃**), profit increases by ~0.0347 units.  
+- **42989.0082** is the **intercept (base profit)** when all inputs are zero.
 
 ---
 
-### Summary
+### 📊 Summary
 
 - Polynomial Regression generalizes Linear Regression by adding polynomial terms of input features.  
-- It fits a **curved surface** to the data, making it useful for datasets where the relationship between inputs and outputs is nonlinear.  
-- Scikit-Learn’s `PolynomialFeatures` automates the creation of these polynomial terms.  
+- It fits a **curved surface** to the data, making it suitable for **nonlinear relationships**.  
+- Scikit-Learn’s `PolynomialFeatures` automates creation of these polynomial terms.  
 
-\[
-\text{Final Model: } \hat{Y} = \beta_0 + \beta_1x_1 + \beta_2x_2 + \beta_3x_3 + \ldots + \beta_nx_n
-\]
+**Final Model:**  
+**Ŷ = β₀ + β₁x₁ + β₂x₂ + β₃x₃ + ... + βₙxₙ**
 
 <img width="1342" height="750" alt="image" src="https://github.com/user-attachments/assets/f5e766ef-5691-4d3f-b295-0eac462fe565" />
 
