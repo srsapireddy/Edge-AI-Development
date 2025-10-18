@@ -462,7 +462,137 @@ Gradient Descent ensures that starting from any initial value, it will eventuall
 
 ---
 
+# Predicting Startup Profits - Multiple Linear Regression
 
+This repository demonstrates a **multiple linear regression model** applied on the `50_Startups.csv` dataset using **Python** and **scikit-learn**.  
+It builds a regression model that predicts company profit based on R&D Spend, Administration, and Marketing Spend.
+
+---
+
+## 📘 Overview
+
+This project covers:
+1. Loading and cleaning the dataset  
+2. Splitting data into training and test sets  
+3. Building a Multiple Linear Regression model  
+4. Making predictions and comparing results  
+5. Displaying coefficients, intercept, and regression equation  
+
+---
+
+## 📂 Dataset Information
+
+- **Dataset file:** `50_Startups.csv`  
+- **Expected columns:**
+  - `R&D Spend` — research & development investment  
+  - `Administration` — admin cost  
+  - `Marketing Spend` — marketing budget  
+  - `State` — categorical (removed for this implementation)  
+  - `Profit` — target variable (dependent)
+
+> Ensure `50_Startups.csv` is located in the same folder as your Python script.
+
+---
+
+## ⚙️ Requirements
+
+Install dependencies before running the script:
+
+```bash
+pip install pandas scikit-learn
+```
+
+## Code
+
+```
+# Multiple Linear Regression Model
+# Using 50_Startups.csv Dataset
+
+# Step 1: Import necessary libraries
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+
+# Step 2: Load the dataset
+dataset = pd.read_csv('50_Startups.csv')
+
+# Step 3: Remove the 'State' column (non-numeric)
+dataset = dataset.drop('State', axis=1)
+
+# Step 4: Separate the independent (X) and dependent (Y) variables
+X = dataset.iloc[:, :-1].values
+Y = dataset.iloc[:, -1].values
+
+# Step 5: Split the dataset into Training and Testing sets
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=0)
+
+# Step 6: Create and train the Linear Regression model
+regressor = LinearRegression()
+regressor.fit(X_train, Y_train)
+
+# Step 7: Make predictions on the test set
+y_pred = regressor.predict(X_test)
+print("\nPredicted Values:")
+print(y_pred)
+
+# Step 8: Compare predicted and actual values
+print("\nComparison of Actual vs Predicted:")
+for i, (pred, actual) in enumerate(zip(y_pred, Y_test)):
+    print(f"Sample {i+1}: Predicted = {pred:.2f}, Actual = {actual:.2f}")
+
+# Step 9: Display model coefficients and intercept
+print("\nModel Coefficients:", regressor.coef_)
+print("Model Intercept:", regressor.intercept_)
+
+# Step 10: Display the final regression equation
+print("\nRegression Equation:")
+print(f"Y = {regressor.coef_[0]:.7f}*x1 + {regressor.coef_[1]:.7f}*x2 + {regressor.coef_[2]:.7f}*x3 + {regressor.intercept_:.7f}")
+
+```
+
+## Sample Output
+
+```
+Predicted Values:
+[103015.20 132582.28 133222.89  72919.10 179720.10 115049.64  67429.92  98581.96 114822.49 168537.38]
+
+Comparison of Actual vs Predicted:
+Sample 1: Predicted = 103015.20, Actual = 103282.38
+Sample 2: Predicted = 132582.28, Actual = 144259.40
+Sample 3: Predicted = 133222.89, Actual = 146121.95
+...
+
+Model Coefficients: [ 0.80571614  0.00109725  0.02639357]
+Model Intercept: 49032.89914125249
+
+Regression Equation:
+Y = 0.8057161*x1 + 0.0010973*x2 + 0.0263936*x3 + 49032.8991413
+
+```
+
+## 📈 Explanation
+
+- **X (Independent Variables):** R&D Spend, Administration, Marketing Spend  
+- **Y (Dependent Variable):** Profit  
+
+- **Coefficients (`coef_`):** Indicate how much `Y` changes when each `X` changes.  
+- **Intercept (`intercept_`):** Value of `Y` when all inputs are zero.  
+
+**Final Model Equation Format:**
+
+\[
+Y = a_1x_1 + a_2x_2 + a_3x_3 + b
+\]
+
+Where:  
+- \( x_1 \) = R&D Spend  
+- \( x_2 \) = Administration  
+- \( x_3 \) = Marketing Spend  
+- \( Y \) = Predicted Profit  
+- \( a_1, a_2, a_3 \) = Model Coefficients  
+- \( b \) = Intercept  
+
+---
 
 
 
