@@ -1,5 +1,4 @@
 # Edge-AI-Development
-# Edge Computing
 
 ## When You Hear "AI" Today...
 
