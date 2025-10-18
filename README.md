@@ -37,8 +37,7 @@ This repository bridges both worlds — combining **logical structure** with **l
 Running AI on **RISC-V** is like giving intelligence to a system with no safety net —  
 no Linux, no Python, and minimal memory. Yet that’s exactly what makes it exciting.
 
-<img width="612" height="407" alt="image" src="https://github.com/user-attachments/assets/9ff981d0-c326-4a4f-967c-c3346e689e29" />
-
+<img width="578" height="328" alt="image" src="https://github.com/user-attachments/assets/047f7f2f-5680-4e7d-b8c3-db1da080683d" />
 
 ### Challenges
 - No Linux, no Python, no high-level frameworks  
