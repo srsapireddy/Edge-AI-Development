@@ -55,7 +55,7 @@ proving that intelligent behavior doesn’t need a data center — just efficien
 
 # Understanding RISC-V Board
 
-## 🚀 What This Project Is Really About
+## What This Project Is Really About
 
 This project is designed to **build AI from the ground up** — not in the cloud, but directly on RISC-V boards and bare-metal systems.
 
@@ -167,7 +167,7 @@ Higher frequency or better instruction efficiency = faster inference.
 
 ---
 
-### 🧠 Key Insight
+### Key Insight
 
 Clock speed defines **how many opportunities per second** your processor has to perform work.  
 The **real speed** of inference depends on how many cycles each instruction takes and how efficiently the CPU uses each tick.
@@ -176,7 +176,7 @@ The **real speed** of inference depends on how many cycles each instruction take
 
 # Best-Fitting Lines 101 - Getting Started With ML
 
-## 📈 Linear Regression Visualization
+## Linear Regression Visualization
 
 <img width="1917" height="847" alt="image" src="https://github.com/user-attachments/assets/adeee273-d21f-4d0a-866c-3318b541753e" />
 
@@ -212,13 +212,13 @@ for **embedded and RISC-V edge hardware**. It demonstrates:
 ## 🔗 Interactive Regression Model
 
 You can explore the live interactive version of the regression model here:  
-👉 [View on Desmos](https://www.desmos.com/calculator/ylifeiyfqw)
+[View on Desmos](https://www.desmos.com/calculator/ylifeiyfqw)
 
 ---
 
 # Gradient Descent Unlocked
 
-# 📘 Linear Regression from Scratch using Python
+# Linear Regression from Scratch using Python
 
 This project demonstrates how to build a **Linear Regression model from scratch** using **NumPy**, **Pandas**, and **Matplotlib** — without using prebuilt machine learning libraries like scikit-learn.
 
@@ -226,7 +226,7 @@ The model predicts students’ exam scores based on the number of hours they stu
 
 ---
 
-## 🎯 Objective
+## Objective
 
 We aim to find a straight-line relationship between the number of hours studied and the corresponding exam scores.
 
@@ -244,7 +244,7 @@ Our goal is to determine the best values of **m** and **b** that minimize the di
 
 ---
 
-## 📂 Dataset
+## Dataset
 
 Create a file named **`student_scores.csv`** with the following content:
 
@@ -469,7 +469,7 @@ It builds a regression model that predicts company profit based on R&D Spend, Ad
 
 ---
 
-## 📘 Overview
+## Overview
 
 This project covers:
 1. Loading and cleaning the dataset  
@@ -480,7 +480,7 @@ This project covers:
 
 ---
 
-## 📂 Dataset Information
+## Dataset Information
 
 - **Dataset file:** `50_Startups.csv`  
 - **Expected columns:**
@@ -494,13 +494,14 @@ This project covers:
 
 ---
 
-## ⚙️ Requirements
+## Requirements
 
 Install dependencies before running the script:
 
 ```bash
 pip install pandas scikit-learn
 ```
+---
 
 ## Code
 
@@ -549,6 +550,7 @@ print("\nRegression Equation:")
 print(f"Y = {regressor.coef_[0]:.7f}*x1 + {regressor.coef_[1]:.7f}*x2 + {regressor.coef_[2]:.7f}*x3 + {regressor.intercept_:.7f}")
 
 ```
+---
 
 ## Sample Output
 
@@ -570,7 +572,9 @@ Y = 0.8057161*x1 + 0.0010973*x2 + 0.0263936*x3 + 49032.8991413
 
 ```
 
-## 📈 Explanation
+---
+
+## Explanation
 
 - **X (Independent Variables):** R&D Spend, Administration, Marketing Spend  
 - **Y (Dependent Variable):** Profit  
