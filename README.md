@@ -820,7 +820,8 @@ int main (void)
 }
 
 ```
-
+## Example Simulation: STM 32 Microcontroller
+<img width="1918" height="988" alt="image" src="https://github.com/user-attachments/assets/31ec5539-b985-451d-9669-07497900677a" />
 
 
 
