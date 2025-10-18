@@ -1501,6 +1501,14 @@ const float scale[NUM_FEATURES] = {10.0f, 20000.0f};
 * Demonstrates hardware-aware AI deployment
 * Works fully inside the Wokwi simulator
 
+## Exanple Output
+
+<img width="1912" height="947" alt="image" src="https://github.com/user-attachments/assets/5bf8f943-f57e-4004-a546-bed0d66a16b1" />
+
+---
+
+# Handwritten Digit Recognition with SVM - From MNIST to Embedded Boards
+
 
 
 
