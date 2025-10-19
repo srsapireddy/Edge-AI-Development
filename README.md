@@ -2145,7 +2145,7 @@ This project provides an **interactive visualization of an Artificial Neural Net
 
 ## Example Visualization
 
-![Visual ANN](https://miro.medium.com/v2/resize:fit:1400/1*Xz5wk9s4WiGmsrJvqRRpJQ.gif)
+![Visual ANN](<img width="2364" height="1782" alt="image" src="https://github.com/user-attachments/assets/4f12e318-37bb-47be-bba7-69ad59519f4d" />)
 
 ---
 
