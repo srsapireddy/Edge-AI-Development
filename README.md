@@ -2189,8 +2189,8 @@ The **RISC-V Edge AI Workshop** showcases a complete end-to-end workflow:
 ### Repository Structure
 ```bash
 ├── Training/               # Scripts for model training and quantization  
-├── VSD_Camera_Interfacing/ # Code for camera integration and board setup  
-├── VSD_Prediction/         # Quantized inference implementation  
+├── Camera_Interfacing/ # Code for camera integration and board setup  
+├── Prediction/         # Quantized inference implementation  
 ├── PCB_DESIGN/             # Schematic and PCB layout files  
 └── README.md               # Project documentation
 ```
