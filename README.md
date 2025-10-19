@@ -2145,8 +2145,7 @@ This project provides an **interactive visualization of an Artificial Neural Net
 
 ## Example Visualization
 
-![Visual ANN](<img width="480" height="270" alt="image" src="https://github.com/user-attachments/assets/6cf2c6a3-c9d6-487f-adfd-f68c20857d26" />
-)
+![Visual ANN](<img width="1280" height="720" alt="image" src="https://github.com/user-attachments/assets/0f972b9b-99d5-4c92-8cc5-086607de83fa"/>)
 
 ---
 
