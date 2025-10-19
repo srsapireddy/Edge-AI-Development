@@ -1872,7 +1872,7 @@ The model parameters (weights, bias, mean, and scale) are pre-quantized into **8
 Normalizes each feature using quantized mean and scale values:
 ```c
 x[i] = (x[i] - (mean[i] * mean_scale)) / (scale[i] * scale_scale);
-
+```
 
 ```
 #include <stdio.h>
@@ -1920,7 +1920,6 @@ int main() {
     }
     return 0;
 }
-
 ```
 
 
