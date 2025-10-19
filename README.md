@@ -2199,6 +2199,55 @@ The **RISC-V Edge AI Workshop** showcases a complete end-to-end workflow:
 
 ---
 
+# Multi-Layer Perceptron Visualization
+
+This visualization demonstrates how a **Multi-Layer Perceptron (MLP)** processes input activations through multiple layers of neurons to classify a digit image.  
+The example below shows the network predicting the digit **2** from a simplified 8×8 pixel grid representation.
+
+<p align="center">
+  <img width="1002" height="911" alt="image" src="https://github.com/user-attachments/assets/e16ad581-cd3d-4d3d-892e-40779b24a7bb" />
+</p>
+
+---
+
+## Description
+
+- **Input Layer:** Each cell in the 8×8 grid represents a pixel intensity fed into the input neurons.  
+- **Hidden Layers:** The connections between layers (shown as lines) visualize the **activation flow** through the network.  
+  - 🟦 **Blue lines** → Positive activations  
+  - 🟧 **Orange lines** → Negative activations  
+- **Output Layer:** The final neurons correspond to digit classes (0–9). The highlighted node indicates the predicted class — here, the model outputs **2**.
+
+---
+
+## Model Details
+
+- **Architecture:** Multi-Layer Perceptron (Feed-Forward Neural Network)  
+- **Quantization:** 1-bit Quantization-Aware Training (1-bit QaT)  
+- **Accuracy:** ~66.36% on the MNIST-like test dataset  
+- **Visualization Controls:**
+  - *Connection Threshold* — adjusts visibility of neuron connections based on strength  
+  - *Center Input* — aligns input grid for visualization clarity  
+  - *Load Weights* — loads pre-trained model weights for demo  
+
+---
+
+## Insights
+
+This visualization highlights:
+- How **activation signs** (positive vs. negative) influence downstream neuron responses  
+- The role of **layer depth** in feature extraction and decision-making  
+- The effect of **quantized weights** on network interpretability and performance  
+
+---
+
+## Repository
+
+This visualization is inspired by and based on the open-source project  
+[Neural Network Visualizer by Ankit Mawle](https://github.com/ankitmawle/neural-network-visualizer)
+
+
+
 
 
 
