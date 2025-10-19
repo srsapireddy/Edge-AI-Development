@@ -1922,6 +1922,110 @@ int main() {
     return 0;
 }
 ```
+---
+
+# SVM Inference on ESP32 (Quantized Model)
+
+This project demonstrates running a **quantized Support Vector Machine (SVM)** model on the **ESP32 microcontroller** using C.  
+The code performs feature scaling, model inference, and prediction display through the serial monitor — ideal for **Edge AI and embedded ML** experiments.
+
+---
+
+## Features
+- Runs quantized SVM inference directly on the ESP32.
+- Uses fixed-point scaled parameters (`svm_model_q.h`, `scaler_q.h`, `test_images_q.h`).
+- Implements lightweight preprocessing (`scale_input()`).
+- Fully compatible with both **Arduino** and **ESP-IDF** frameworks.
+- Demonstrates end-to-end workflow: scaling → inference → result printout.
+
+---
+
+## 🧩 File Structure
+├── main.c / svm_esp32.ino # Main inference code <br>
+├── svm_model_q.h # Model weights, biases, and scaling constants <br>
+├── scaler_q.h # Mean and scale arrays for normalization <br>
+├── test_images_q.h # Test samples and expected labels <br>
+├── README.md # Project documentation <br>
+
+---
+
+
+---
+
+## How to Run
+
+###  Arduino IDE
+1. Install **ESP32 Boards** via Arduino Board Manager.
+2. Create a new sketch (e.g., `svm_esp32.ino`).
+3. Copy the code from `main.c` into the sketch.
+4. Place your header files in the same directory.
+5. Select your ESP32 board (e.g., *ESP32 Dev Module*).
+6. Upload and open the Serial Monitor (115200 baud).
+
+## Main C Code
+```
+#include <Arduino.h>
+#include <stdint.h>
+#include <math.h>
+
+#include "svm_model_q.h"
+#include "scaler_q.h"
+#include "test_images_q.h"
+
+// Convert float to int8_t with saturation
+static inline int8_t f2i8(float v) {
+  if (v > 127.0f) v = 127.0f;
+  if (v < -128.0f) v = -128.0f;
+  return (int8_t)lrintf(v);
+}
+
+void scale_input(int8_t *x) {
+  for (int i = 0; i < NUM_FEATURES; i++) {
+    // Do math in float to avoid integer truncation
+    float xf = (float)x[i];
+    float m  = mean[i]  * mean_scale;
+    float s  = scale[i] * scale_scale;
+    float z  = (xf - m) / (s == 0.0f ? 1.0f : s);
+    x[i] = f2i8(z);
+  }
+}
+
+int predict(const int8_t *x) {
+  int   best_class = 0;
+  float max_score  = -INFINITY;
+  for (int c = 0; c < NUM_CLASSES; ++c) {
+    float score = bias[c] * bias_scale;
+    for (int i = 0; i < NUM_FEATURES; i++) {
+      score += (weights[c][i] * weight_scale) * (float)x[i];
+    }
+    if (score > max_score) {
+      max_score  = score;
+      best_class = c;
+    }
+  }
+  return best_class;
+}
+
+void setup() {
+  Serial.begin(115200);
+  while (!Serial) { /* wait USB CDC if needed */ }
+
+  for (int i = 0; i < NUM_TEST_IMAGES; i++) {
+    scale_input(test_images[i]);
+    int predicted = predict(test_images[i]);
+    int actual    = test_labels[i];
+    Serial.printf("Image %d: Predicted = %d, Actual = %d\r\n", i, predicted, actual);
+  }
+}
+
+void loop() {
+  // no-op
+}
+
+```
+
+You should see:
+<img width="1913" height="941" alt="image" src="https://github.com/user-attachments/assets/1878a750-88b5-49d8-8890-ec34f1073ad9" />
 
 
 
