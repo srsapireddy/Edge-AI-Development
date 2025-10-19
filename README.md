@@ -147,9 +147,8 @@ leading to much faster inference.
 
 Overall performance can be approximated as:
 
-\[
-\text{Inference Time} = \frac{\text{Operations per Inference} \times \text{CPI}}{\text{Clock Speed} \times \text{IPC}}
-\]
+Inference Time = (Operations per Inference × Cycles per Instruction) / (Clock Speed × Instructions per Cycle)
+
 
 ---
 
