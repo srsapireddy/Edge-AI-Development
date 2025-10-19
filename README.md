@@ -2042,8 +2042,132 @@ You should see:
 
 <img width="1000" height="500" alt="image" src="https://github.com/user-attachments/assets/94122d82-e6e6-4d74-a49e-31e114841c3a" />
 
-Reference: https://playground.tensorflow.org/#activation=tanh&batchSize=10&dataset=circle&regDataset=reg-plane&learningRate=0.03&regularizationRate=0&noise=0&networkShape=4,2&seed=0.70009&showTestData=false&discretize=false&percTrainData=50&x=true&y=true&xTimesY=false&xSquared=false&ySquared=false&cosX=false&sinX=false&cosY=false&sinY=false&collectStats=false&problem=classification&initZero=false&hideText=false
+Reference: [View on Tinker](https://playground.tensorflow.org/#activation=tanh&batchSize=10&dataset=circle&regDataset=reg-plane&learningRate=0.03&regularizationRate=0&noise=0&networkShape=4,2&seed=0.70009&showTestData=false&discretize=false&percTrainData=50&x=true&y=true&xTimesY=false&xSquared=false&ySquared=false&cosX=false&sinX=false&cosY=false&sinY=false&collectStats=false&problem=classification&initZero=false&hideText=false)
+
 ---
+
+# ⚙️ Common Activation Functions in Neural Networks
+
+Activation functions introduce **non-linearity** into neural networks, enabling them to learn complex data patterns and relationships.
+
+---
+
+## 1. Tanh (Hyperbolic Tangent)
+
+**Equation:**  
+tanh(x)
+
+**Description:**  
+- Range: (-1, 1)  
+- Output is zero-centered  
+- Can saturate for large |x| values  
+
+---
+
+## 2. ReLU (Rectified Linear Unit)
+
+**Equation:**  
+f(x) = max(0, x)
+
+**Description:**  
+- Range: [0, ∞)  
+- Simple and efficient to compute  
+- Helps mitigate vanishing gradients  
+- May lead to “dead neurons” for negative inputs  
+
+---
+
+## 3. Sigmoid
+
+**Equation:**  
+σ(x) = 1 / (1 + e^(-x))
+
+**Description:**  
+- Range: (0, 1)  
+- Smooth and differentiable  
+- Commonly used for binary classification  
+- Can saturate and cause slow convergence for large |x|  
+
+---
+
+## 4. Linear (Identity Function)
+
+**Equation:**  
+f(x) = x
+
+**Description:**  
+- Range: (-∞, ∞)  
+- No non-linearity  
+- Used in regression models or as an output layer  
+
+---
+
+### Visualization
+
+Below is a comparison of these activation functions:
+
+<img width="789" height="529" alt="image" src="https://github.com/user-attachments/assets/94aec4b7-35e0-45df-b0f0-99204c5b2fb4" />
+
+---
+
+# Deep Neural Networks
+
+# Visual ANN — Interactive Neural Network Visualization
+
+This project provides an **interactive visualization of an Artificial Neural Network (ANN)** that demonstrates how data flows through layers, neurons, and connections in real time.
+
+---
+
+## Overview
+
+- The **left panel** represents the **input grid**, where each square acts as a pixel or feature input.  
+  Users can draw directly on this grid, simulating how an ANN receives raw input data.  
+
+- The **middle section** visualizes the **hidden layers** of the network:  
+  - **Layer 1** (pink nodes) receives the input signals.  
+  - **Layer 2** (orange nodes) processes those signals further through weighted connections.  
+  - Each connection’s color intensity indicates the weight’s magnitude and sign — positive or negative influence on the next layer.
+
+- The **right panel** displays the **output neurons**, labeled from **0 to 9**, corresponding to the network’s possible classification outputs (e.g., handwritten digits).  
+  - The highlighted green box shows the predicted class.  
+  - The **“Prediction: N/A”** label updates dynamically once input is processed.
+
+---
+
+## Features
+
+- **Real-time forward propagation visualization** — watch activations and weights update as data flows through the network.  
+- **Interactive input grid** — users can draw custom patterns to see how the model interprets them.  
+- **Dynamic color-coded connections** — helps understand how neurons activate and contribute to the final prediction.  
+- **Lightweight and educational** — ideal for learning neural network concepts interactively.
+
+---
+
+## Example Visualization
+
+![Visual ANN](<img width="800" height="483" alt="image" src="https://github.com/user-attachments/assets/835f105f-ab4e-49cb-9513-35ee7d38def9" />)
+
+---
+
+## Use Case
+
+This visualization is perfect for:
+- Teaching the fundamentals of neural networks  
+- Demonstrating **feedforward propagation**  
+- Understanding the impact of weights and activations  
+- Exploring the relationship between **input**, **hidden**, and **output layers**
+
+---
+
+### Future Extensions
+- Add support for **custom architectures** (variable layer sizes).  
+- Integrate **activation function visualization** (Sigmoid, ReLU, Tanh).  
+- Allow real-time weight updates to visualize **backpropagation**.
+
+---
+
+
+
 
 
 
