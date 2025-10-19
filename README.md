@@ -2027,6 +2027,24 @@ void loop() {
 You should see:
 <img width="1913" height="941" alt="image" src="https://github.com/user-attachments/assets/1878a750-88b5-49d8-8890-ec34f1073ad9" />
 
+---
+
+# The Brain’s Building Blocks: Biological Neurons
+
+- The human brain contains approximately **86 billion neurons**, interconnected by trillions of synapses, forming an incredibly complex network.  
+
+- Neurons communicate through a sophisticated interplay of **electrical impulses** (action potentials) and **chemical signals**.  
+
+- Key features include:  
+  - **Dendrites** that receive input  
+  - **Axons** that send output  
+  - **Synapses** that modulate signal strength, enabling dynamic information flow  
+
+<img width="1000" height="500" alt="image" src="https://github.com/user-attachments/assets/94122d82-e6e6-4d74-a49e-31e114841c3a" />
+
+Reference: https://playground.tensorflow.org/#activation=tanh&batchSize=10&dataset=circle&regDataset=reg-plane&learningRate=0.03&regularizationRate=0&noise=0&networkShape=4,2&seed=0.70009&showTestData=false&discretize=false&percTrainData=50&x=true&y=true&xTimesY=false&xSquared=false&ySquared=false&cosX=false&sinX=false&cosY=false&sinY=false&collectStats=false&problem=classification&initZero=false&hideText=false
+---
+
 
 
 
