@@ -2171,7 +2171,7 @@ This visualization is perfect for:
 
 ## RISC-V Edge AI 
 
-This repository serves as a starting framework for deploying **quantized AI models** on **RISC-V-based edge devices**.  
+This repository serves as a starting framework for deploying **quantized AI models** on **RISC-V-based edge devices**.  <br>
 The project demonstrates how to **train, quantize, and deploy lightweight neural networks** on microcontrollers using the **VSD Squadron Mini board** with **CH32V003F4U6** and **OV7670 camera**.
 
 ---
