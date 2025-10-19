@@ -209,7 +209,7 @@ for **embedded and RISC-V edge hardware**. It demonstrates:
 - The role of error and feedback in improving models.  
 - The foundation upon which neural networks and adaptive systems are built.
 
-## 🔗 Interactive Regression Model
+## Interactive Regression Model
 
 You can explore the live interactive version of the regression model here:  
 [View on Desmos](https://www.desmos.com/calculator/ylifeiyfqw)
@@ -605,7 +605,7 @@ We’ll use the classic `50_Startups.csv` dataset, drop the non-numeric `State` 
 
 ---
 
-## 📦 Requirements
+## Requirements
 
 - Python 3.8+
 - pandas
@@ -680,7 +680,7 @@ plt.show()
 
 ---
 
-## 🧮 Mathematical Explanation
+## Mathematical Explanation
 
 ### 1. Hypothesis Function
 
@@ -762,7 +762,7 @@ After training, a possible model could look like:
 
 ---
 
-### 📊 Summary
+### Summary
 
 - Polynomial Regression generalizes Linear Regression by adding polynomial terms of input features.  
 - It fits a **curved surface** to the data, making it suitable for **nonlinear relationships**.  
@@ -1252,7 +1252,7 @@ It enables **lightweight edge AI inference** without any external libraries or f
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ├── sketch.ino → Main program (C inference logic)
 ├── svm_model.h → Model weights and biases
@@ -1261,7 +1261,7 @@ It enables **lightweight edge AI inference** without any external libraries or f
 
 ---
 
-## ⚙️ Step 1: Create `svm_model.h`
+## Step 1: Create `svm_model.h`
 
 This header defines the trained SVM model coefficients and bias terms.
 
@@ -1514,7 +1514,7 @@ It includes complete preprocessing, training, evaluation, and visualization step
 
 ---
 
-## 📘 Overview
+## Overview
 
 - **Dataset:** MNIST (28×28 grayscale handwritten digits)
 - **Model Used:** Linear Support Vector Classifier (LinearSVC)
@@ -1524,7 +1524,7 @@ It includes complete preprocessing, training, evaluation, and visualization step
 
 ---
 
-## ⚙️ Workflow
+## Workflow
 
 ### 1️⃣ Import Required Libraries
 Uses TensorFlow (for MNIST dataset), scikit-learn (for model & metrics), NumPy, Pandas, Matplotlib, and Seaborn.
@@ -1645,7 +1645,7 @@ int main() {
 
 ```
 
-## 🧩 Notes
+## Notes
 
 Make sure the following header files are in the same directory as your main C file:
 
@@ -1655,7 +1655,7 @@ Make sure the following header files are in the same directory as your main C fi
 
 ---
 
-### ⚙️ How It Works
+### How It Works
 
 This code performs inference using a pre-trained **Support Vector Machine (SVM)** model exported from Python to C.
 
@@ -1676,7 +1676,7 @@ The program loops through all test samples defined in `test_images.h`, printing 
 
 ---
 
-### 🖥️ Example Output
+### Example Output
 Image 0: Predicted = 2, Actual = 2 <br>
 Image 1: Predicted = 7, Actual = 7 <br>
 Image 2: Predicted = 1, Actual = 1 <br>
@@ -1940,7 +1940,7 @@ The code performs feature scaling, model inference, and prediction display throu
 
 ---
 
-## 🧩 File Structure
+## File Structure
 ├── main.c / svm_esp32.ino # Main inference code <br>
 ├── svm_model_q.h # Model weights, biases, and scaling constants <br>
 ├── scaler_q.h # Mean and scale arrays for normalization <br>
@@ -2046,7 +2046,7 @@ Reference: [View on Tinker](https://playground.tensorflow.org/#activation=tanh&b
 
 ---
 
-# ⚙️ Common Activation Functions in Neural Networks
+# Common Activation Functions in Neural Networks
 
 Activation functions introduce **non-linearity** into neural networks, enabling them to learn complex data patterns and relationships.
 
