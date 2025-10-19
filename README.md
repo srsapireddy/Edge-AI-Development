@@ -112,9 +112,8 @@ Assume:
 - Each MAC takes **4 cycles**
 - Processor speed = **320 MHz**
 
-\[
-\text{Time per inference} = \frac{100\,\text{M ops} \times 4\,\text{cycles/op}}{320\,\text{M cycles/s}} = 1.25\,\text{s}
-\]
+Time per inference = (100 million operations × 4 cycles per operation) / (320 million cycles per second) = 1.25 seconds
+
 
 Therefore, one inference ≈ **1.25 seconds**.
 
@@ -130,9 +129,8 @@ Modern CPUs employ several features to improve performance beyond raw frequency:
 
 If the processor executes **8 MACs per cycle**, the throughput becomes:
 
-\[
-320\,\text{MHz} \times 8 = 2.56\,\text{G MAC/s}
-\]
+320 MHz × 8 = 2.56 Giga MACs per second (2.56 GMAC/s)
+
 
 leading to much faster inference.
 
