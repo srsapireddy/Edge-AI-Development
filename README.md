@@ -2167,6 +2167,37 @@ This visualization is perfect for:
 
 ---
 
+# Neural Networks in Action - From Scratch to 98% Accuracy
+
+## RISC-V Edge AI 
+
+This repository serves as a starting framework for deploying **quantized AI models** on **RISC-V-based edge devices**.  
+The project demonstrates how to **train, quantize, and deploy lightweight neural networks** on microcontrollers using the **VSD Squadron Mini board** with **CH32V003F4U6** and **OV7670 camera**.
+
+---
+
+### Overview
+The **RISC-V Edge AI Workshop** showcases a complete end-to-end workflow:
+
+- **Model Training:** Python scripts for dataset training and quantization  
+- **Embedded Deployment:** C/C++ inference code optimized for RISC-V boards  
+- **Hardware Integration:** Camera interface, real-time prediction, and PCB design examples  
+- **Edge Inference:** Demonstrates on-device AI without external compute resources  
+
+---
+
+### Repository Structure
+```bash
+├── Training/               # Scripts for model training and quantization  
+├── VSD_Camera_Interfacing/ # Code for camera integration and board setup  
+├── VSD_Prediction/         # Quantized inference implementation  
+├── PCB_DESIGN/             # Schematic and PCB layout files  
+└── README.md               # Project documentation
+```
+
+🔗 **Original Repository:** [RiscV_Edge_AI_Workshop by Dhanvanti Bhavsar](https://github.com/dhanvantibhavsar/RiscV_Edge_AI_Workshop)
+
+---
 
 
 
