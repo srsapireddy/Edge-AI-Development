@@ -2167,7 +2167,7 @@ This visualization is perfect for:
 
 ---
 
-# Neural Networks in Action - From Scratch to 98% Accuracy
+# Training Bit-Quantized Neural Network Implementation with Quantization-Aware Training
 
 ## RISC-V Edge AI 
 
