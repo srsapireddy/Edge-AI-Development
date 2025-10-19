@@ -1892,9 +1892,9 @@ int predict(int8_t *x) {
     int best_class = 0;
     float max_score = -INFINITY;
     for (int c = 0; c < NUM_CLASSES; ++c) {
-        float score = bias[0] * bias_scale;
+        float score = bias[c] * bias_scale;
         for (int i = 0; i < NUM_FEATURES; i++) {
-            score += weights[0][i] * x[i] * weight_scale;
+            score += weights[c][i] * x[i] * weight_scale;
         }
         if (score > max_score) {
             max_score = score;
@@ -1903,6 +1903,7 @@ int predict(int8_t *x) {
     }
     return best_class;
 }
+
 
 void print_float(float val) {
     int int_part = (int)val;
