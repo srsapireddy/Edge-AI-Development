@@ -44,7 +44,7 @@ no Linux, no Python, and minimal memory. Yet that’s exactly what makes it exci
 - Low RAM and low power, but full hardware control  
 - Feels like teaching a rock to play chess — slow at first, but it works
 
-| Feature | Raspberry Pi | RISC-V (VSD Pro) |
+| Feature | Raspberry Pi | RISC-V |
 |----------|---------------|------------------|
 | **OS** | Full Linux | Bare-metal |
 | **Tools** | Python, PyTorch | C, Assembly |
